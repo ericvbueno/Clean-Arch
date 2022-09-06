@@ -19,7 +19,7 @@ test("Deve fazer um pedido", function() {
         issueDate: new Date("2021-03-01T10:00:00")
     };
     const output = placeOrder.execute(input);
-    expect(output.total).toBe(4872);
+    expect(output.total).toBe(5132);
 });
 
 test("Deve fazer um pedido calculando o código", function() {

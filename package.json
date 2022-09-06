@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "tsc && jest --coverage ./dist"
+    "test": "tsc && jest ./dist",
+    "test:coverage": "npm run test -- --coverage"
   },
   "keywords": [],
   "author": "",

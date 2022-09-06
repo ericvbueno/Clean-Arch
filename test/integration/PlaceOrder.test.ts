@@ -41,3 +41,21 @@ test("Deve fazer um pedido calculando o código", function() {
     const output = placeOrder.execute(input);
     expect(output.code).toBe("202100000002");
 });
+
+test("Deve retornar uma exceção ao tentar fazer um pedido com um item inexistente", function() {
+    const itemRepository = new ItemRepositoryMemory();
+    const orderRepository = new OrderRepositoryMemory();
+    const couponRepository = new CouponRepositoryMemory();
+    const placeOrder = new PlaceOrder(itemRepository, orderRepository, couponRepository);
+    const input = {
+        cpf: "219.858.810-20",
+        orderItems: [
+            {idItem: 1,  quantity: 1},
+            {idItem: 2,  quantity: 1},
+            {idItem: 4,  quantity: 3}
+        ],
+        coupon: "VALE20",
+        issueDate: new Date("2021-03-01T10:00:00")
+    };
+    expect(() => placeOrder.execute(input)).toThrow(new Error("Item not found"));
+});

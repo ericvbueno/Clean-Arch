@@ -12,3 +12,12 @@ test("Deve testar um cpf inválido com digitos iguais", function() {
 test("Deve testar um cpf inválido com digitos diferentes", function() {
     expect(() => new Cpf("123.456.789-99")).toThrow(new Error("CPF Inválido"));
 });
+
+test("Deve retornar uma exceção ao tentar criar um cpf com valor vazio", function() {
+    expect(() => new Cpf('')).toThrow(new Error("CPF Inválido"));
+});
+
+test("Deve retornar uma exceção se a quantidade de dígitos for diferente de 11", function() {
+    expect(() => new Cpf('123.456.789-1')).toThrow(new Error("CPF Inválido"));
+});
+

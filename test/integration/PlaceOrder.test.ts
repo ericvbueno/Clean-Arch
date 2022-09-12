@@ -1,30 +1,20 @@
-import OrderRepositoryMemory from "../../src/infra/repository/memory/OrderRepositoryMemory";
 import PlaceOrder from "../../src/application/usecase/place-order/PlaceOrder";
 import PostgreSQLConnectionAdapter from "../../src/infra/database/PostgreSQLConnectionAdapter";
 import Connection from "../../src/infra/database/Connection";
-import ItemRepository from "../../src/domain/repository/ItemRepository";
-import OrderRepository from "../../src/domain/repository/OrderRepository";
-import CouponRepository from "../../src/domain/repository/CouponRepository";
-import ItemRepositoryDatabase from "../../src/infra/repository/database/ItemRepositoryDatabase";
-import CouponRepositoryDatabase from "../../src/infra/repository/database/CouponRepositoryDatabase";
-
+import RepositoryFactory from "../../src/domain/factory/RepositoryFactory";
+import DatabaseRepositoryFactory from "../../src/infra/factory/DatabaseRepositoryFactory";
 
 let connection: Connection;
-let itemRepository: ItemRepository;
-let orderRepository: OrderRepository;
-let couponRepository: CouponRepository;
+let repositoryFactory: RepositoryFactory;
 
 beforeEach(function () {
     connection = new PostgreSQLConnectionAdapter();
-    itemRepository = new ItemRepositoryDatabase(connection);
-    orderRepository = new OrderRepositoryMemory();
-    couponRepository = new CouponRepositoryDatabase(connection);
-    // itemRepository = new ItemRepositoryMemory();
-    // couponRepository = new CouponRepositoryMemory();
+    repositoryFactory = new DatabaseRepositoryFactory(connection);
+    // repositoryFactory = new MemoryRepositoryFactory();
 })
 
 test("Deve fazer um pedido", async function() {
-    const placeOrder = new PlaceOrder(itemRepository, orderRepository, couponRepository);
+    const placeOrder = new PlaceOrder(repositoryFactory);
     const input = {
         cpf: "219.858.810-20",
         orderItems: [
@@ -40,7 +30,7 @@ test("Deve fazer um pedido", async function() {
 });
 
 test("Deve fazer um pedido calculando o código", async function() {
-    const placeOrder = new PlaceOrder(itemRepository, orderRepository, couponRepository);
+    const placeOrder = new PlaceOrder(repositoryFactory);
     const input = {
         cpf: "219.858.810-20",
         orderItems: [

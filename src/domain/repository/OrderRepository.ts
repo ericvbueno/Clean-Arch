@@ -2,5 +2,7 @@ import Order from "../entity/Order";
 
 export default interface OrderRepository {
     save(Order: Order): Promise<void>;
+    getByCode(code: string): Promise<Order>
     count(): Promise<number>;
+    clean(): Promise<void>;
 }

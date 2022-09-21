@@ -7,9 +7,11 @@ import DatabaseRepositoryFactory from "../../src/infra/factory/DatabaseRepositor
 let connection: Connection;
 let repositoryFactory: RepositoryFactory;
 
-beforeEach(function () {
+beforeEach(async function () {
     connection = new PostgreSQLConnectionAdapter();
     repositoryFactory = new DatabaseRepositoryFactory(connection);
+    const orderRepository = repositoryFactory.createOrderRepository();
+    await orderRepository.clean();
     // repositoryFactory = new MemoryRepositoryFactory();
 })
 

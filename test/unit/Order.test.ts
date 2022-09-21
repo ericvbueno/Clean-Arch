@@ -10,8 +10,8 @@ test("Não deve criar um pedido com CPF inválido", function () {
 test("Deve criar um pedido com 3 itens", function() {
     const order = new Order("219.858.810-20");
     order.addItem(new Item(1, "Instrumentos Musicais", "Guitarra", 1000), 1);
-    order.addItem(new Item(1, "Instrumentos Musicais", "Amplificador", 5000), 1);
-    order.addItem(new Item(1, "Instrumentos Musicais", "Cabo", 30), 3);
+    order.addItem(new Item(2, "Instrumentos Musicais", "Amplificador", 5000), 1);
+    order.addItem(new Item(3, "Instrumentos Musicais", "Cabo", 30), 3);
     const total = order.getTotal();
     expect(total).toBe(6090);
 })
@@ -19,8 +19,8 @@ test("Deve criar um pedido com 3 itens", function() {
 test("Deve criar um pedido com 3 itens com cupom de desconto", function() {
     const order = new Order("219.858.810-20");
     order.addItem(new Item(1, "Instrumentos Musicais", "Guitarra", 1000), 1);
-    order.addItem(new Item(1, "Instrumentos Musicais", "Amplificador", 5000), 1);
-    order.addItem(new Item(1, "Instrumentos Musicais", "Cabo", 30), 3);
+    order.addItem(new Item(2, "Instrumentos Musicais", "Amplificador", 5000), 1);
+    order.addItem(new Item(3, "Instrumentos Musicais", "Cabo", 30), 3);
     const coupon = new Coupon("VALE20", 20);
     order.addCoupon(coupon);
     const total = order.getTotal();
@@ -30,8 +30,8 @@ test("Deve criar um pedido com 3 itens com cupom de desconto", function() {
 test("Deve criar um pedido com 3 itens com cupom de desconto expirado", function() {
     const order = new Order("219.858.810-20", new Date("2022-03-01T10:00:00"));
     order.addItem(new Item(1, "Instrumentos Musicais", "Guitarra", 1000), 1);
-    order.addItem(new Item(1, "Instrumentos Musicais", "Amplificador", 5000), 1);
-    order.addItem(new Item(1, "Instrumentos Musicais", "Cabo", 30), 3);
+    order.addItem(new Item(2, "Instrumentos Musicais", "Amplificador", 5000), 1);
+    order.addItem(new Item(3, "Instrumentos Musicais", "Cabo", 30), 3);
     const coupon = new Coupon("VALE20", 20, new Date("2021-03-01T10:00:00"));
     order.addCoupon(coupon);
     const total = order.getTotal();
@@ -57,7 +57,12 @@ test("Deve criar um pedido com 3 itens e calcular o frete minimo", function() {
 test("Deve criar um pedido e calcular o código", function() {
     const order = new Order("219.858.810-20", new Date("2021-03-01T10:00:00"), 1);
     order.addItem(new Item(1, "Instrumentos Musicais", "Guitarra", 1000), 1);
-    order.addItem(new Item(1, "Instrumentos Musicais", "Amplificador", 5000), 1);
-    order.addItem(new Item(1, "Instrumentos Musicais", "Cabo", 30), 3);
+    order.addItem(new Item(2, "Instrumentos Musicais", "Amplificador", 5000), 1);
+    order.addItem(new Item(3, "Instrumentos Musicais", "Cabo", 30), 3);
     expect(order.code.value).toBe("202100000001");
 })
+
+test("Deve lançar uma exception ao tentar criar um pedido com quantidade negativa", function () {
+	const order = new Order("219.858.810-20");
+	expect(() => order.addItem(new Item(1, "Instrumentos Musicais", "Guitarra", 1000), -100)).toThrow(new Error("Quantity must be positive"));
+});

@@ -20,8 +20,9 @@ export default class Order {
     }
 
     addItem (item: Item, quantity: number) {
+        if (quantity < 0) throw new Error("Quantity must be positive");
+        if (this.orderItems.some(OrderItem => OrderItem.idItem === item.idItem)) throw new Error("Duplicated item");
         this.freight.addItem(item, quantity);
-
         this.orderItems.push(new OrderItem(item.idItem, item.price, quantity));
     }
 
@@ -36,11 +37,12 @@ export default class Order {
         for (const orderItem of this.orderItems) {
             total += orderItem.getTotal();
         }
-
         if (this.coupon) {
             total -= this.coupon.calculateDiscount(total);
         }
-        total += this.freight.getTotal();
+        
+        const freight = this.freight.getTotal();
+        total += freight;
         return total;
     }
 }

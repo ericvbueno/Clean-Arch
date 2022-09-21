@@ -66,3 +66,9 @@ test("Deve lançar uma exception ao tentar criar um pedido com quantidade negati
 	const order = new Order("219.858.810-20");
 	expect(() => order.addItem(new Item(1, "Instrumentos Musicais", "Guitarra", 1000), -100)).toThrow(new Error("Quantity must be positive"));
 });
+
+test("Deve lançar uma exception ao tentar criar um pedido com item duplicado", function () {
+	const order = new Order("935.411.347-80");
+	order.addItem(new Item(1, "Instrumentos Musicais", "Guitarra", 1000), 1)
+	expect(() => order.addItem(new Item(1, "Instrumentos Musicais", "Guitarra", 1000), 1)).toThrow(new Error("Duplicated item"));
+});

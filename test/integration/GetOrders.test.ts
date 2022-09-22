@@ -32,7 +32,6 @@ test("Deve obter a lista de pedidos", async function () {
 	await placeOrder.execute(input);
 	const getOrders = new GetOrders(repositoryFactory);
 	const output = await getOrders.execute();
-	console.log(output);
 	expect(output).toHaveLength(3);
 });
 
